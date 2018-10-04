@@ -20,7 +20,7 @@ mongoose.connection.on('error', (err) => {
     console.log('Database error: '+err);
 });
 
-// Initialize
+// Initialize (with nodemon)
 const app = express();
 
 //Chosen port
