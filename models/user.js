@@ -20,6 +20,16 @@ const UserSchema =  mongoose.Schema({
         required: true
     },
 });
+// Avoid password breach
+UserSchema.methods.splicedUser = function(){
+    let splicedUser = {
+        _id: this._id,
+        //name:this.name,
+        username:this.username,
+        //email:this.email
+    }
+    return splicedUser
+}
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
@@ -39,5 +49,12 @@ module.exports.addUser = function(newUser, callback){
             newUser.password = hash;
             newUser.save(callback);
         });
+    });
+}
+
+module.exports.comparePassword = function(candidatePassword, hash, callback){
+    bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
+        if(err) throw err;
+        callback(null, isMatch);
     });
 }
